@@ -62,27 +62,19 @@ public class DobbeltLenketListe<T> implements Liste<T>
 
         this();
 
-
-        if(a.length == 0){
-            throw new NullPointerException("Tabellen a er null!");
-        }
         Objects.requireNonNull(a);
 
-        DobbeltLenketListe<T> liste = new DobbeltLenketListe<T>();
-
-        for(int i = 0; i<a.length; i++){
-            if(a[i] != null){
-
-            }
+        if(a == null){
+            throw new NullPointerException("Tabellen a er null!");
         }
 
-        hode = hale = new Node<>(a[a.length-1],null,null);
-        for (int i = 0; i >= 0; i--)  // resten av verdiene
-        {
-            hode = new Node<>(a[i], hode,hode.forrige);
+
+
+        for( T verdi :a){
+            if(verdi != null) a[antall++]  = verdi;
         }
 
-        antall = a.length;
+
     }
 
 
