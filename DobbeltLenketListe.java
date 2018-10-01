@@ -182,9 +182,24 @@ public class DobbeltLenketListe<T> implements Liste<T>
         throw new UnsupportedOperationException("Ikke laget ennå!");
     }
 
-    public static <T> void sorter(Liste<T> liste, Comparator<? super T> c)
-    {
-        throw new UnsupportedOperationException("Ikke laget ennå!");
+    public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
+        if (liste.tom()) {
+
+        }
+
+        for (int i = 1; i < liste.antall(); i++)
+        {
+            T temp = liste.hent(i);  // flytter a[i] til en hjelpevariabel
+
+            int j = i-1;    // starter med neste tabellposisjon
+
+            // en og en verdi flyttes inntil rett sortert plass er funnet
+            for (; j >= 0 && c.compare(temp,liste.hent(j)) < 0; j--) {
+                liste.oppdater(j+1, liste.hent(j));
+            }
+
+            liste.oppdater(j+1, temp); // temp legges inn på rett plass
+        }
     }
 
     @Override
@@ -241,7 +256,7 @@ public class DobbeltLenketListe<T> implements Liste<T>
             }
 
             fjernOK = true;
-
+            denne = denne.neste;
             return denne.verdi;
 
             }
