@@ -1,11 +1,8 @@
-package Algoritme.oblig.test;
+
 
 /////////// DobbeltLenketListe ////////////////////////////////////
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.Objects;
+import java.util.*;
 
 public class DobbeltLenketListe<T> implements Liste<T>
 {
@@ -191,14 +188,19 @@ public class DobbeltLenketListe<T> implements Liste<T>
     }
 
     @Override
-    public Iterator<T> iterator()
-    {
-        throw new UnsupportedOperationException("Ikke laget ennå!");
+    public Iterator<T> iterator() {
+        DobbeltLenketListeIterator iterator = new DobbeltLenketListeIterator();
+
+        return iterator;
+
     }
 
-    public Iterator<T> iterator(int indeks)
-    {
-        throw new UnsupportedOperationException("Ikke laget ennå!");
+    public Iterator<T> iterator(int indeks) {
+        indeksKontroll(indeks, true);
+
+        DobbeltLenketListeIterator iterator = new DobbeltLenketListeIterator(indeks);
+
+        return iterator;
     }
 
     private class DobbeltLenketListeIterator implements Iterator<T>
@@ -214,9 +216,12 @@ public class DobbeltLenketListe<T> implements Liste<T>
             iteratorendringer = endringer;  // teller endringer
         }
 
-        private DobbeltLenketListeIterator(int indeks)
-        {
-            throw new UnsupportedOperationException("Ikke laget ennå!");
+        private DobbeltLenketListeIterator(int indeks) {
+             Node<T> p = finnNode(indeks);
+             denne = p;
+             fjernOK = false;  // blir sann når next() kalles
+             iteratorendringer = endringer;  // teller endringer
+
         }
 
         @Override
@@ -226,10 +231,20 @@ public class DobbeltLenketListe<T> implements Liste<T>
         }
 
         @Override
-        public T next()
-        {
-            throw new UnsupportedOperationException("Ikke laget ennå!");
-        }
+        public T next() {
+            if(!(endringer == iteratorendringer)) {
+                throw new ConcurrentModificationException("Endringer og iterasjoner endringer er ulike");
+            }
+
+            if(!hasNext()) {
+                throw new NoSuchElementException("Listen har ikke flere elementer");
+            }
+
+            fjernOK = true;
+
+            return denne.verdi;
+
+            }
 
         @Override
         public void remove()
