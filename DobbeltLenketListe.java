@@ -1,10 +1,10 @@
-package Algoritme.oblig.oblig2;
+package Algoritme.oblig.test;
 
 /////////// DobbeltLenketListe ////////////////////////////////////
+
+import java.util.Arrays;
 import java.util.Comparator;
-import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class DobbeltLenketListe<T> implements Liste<T>
@@ -38,7 +38,13 @@ public class DobbeltLenketListe<T> implements Liste<T>
     // hjelpemetode
     private Node<T> finnNode(int indeks)
     {
-        throw new UnsupportedOperationException("Ikke laget ennå!");
+      Node<T> p = hode;
+      for(int i = 0; i < indeks; i++){
+          p = p.neste;
+
+      }
+      return p;
+      //  throw new UnsupportedOperationException("Ikke laget ennå!");
     }
 
     // konstruktør
@@ -54,29 +60,37 @@ public class DobbeltLenketListe<T> implements Liste<T>
     {
         //throw new UnsupportedOperationException("Ikke laget ennå!");
 
-      //  DobbeltLenketListe<T> liste = new DobbeltLenketListe<>(a);
+        this();
 
 
-
-        if(a == null){
+        if(a.length == 0){
             throw new NullPointerException("Tabellen a er null!");
         }
-
         Objects.requireNonNull(a);
-        for(int i = 0; i < a.length-1; i++) {
-            if (a[i] == null) {
 
-            }else{
-                antall +=1;
+        DobbeltLenketListe<T> liste = new DobbeltLenketListe<T>();
+
+        for(int i = 0; i<a.length; i++){
+            if(a[i] != null){
+
             }
-            if(antall == 0){
-                throw new NullPointerException("Listen er tom");
-            }
-
-
         }
 
+        hode = hale = new Node<>(a[a.length-1],null,null);
+        for (int i = 0; i >= 0; i--)  // resten av verdiene
+        {
+            hode = new Node<>(a[i], hode,hode.forrige);
+        }
+
+        antall = a.length;
     }
+
+
+
+
+
+
+
 
     // subliste
     public Liste<T> subliste(int fra, int til)
@@ -101,6 +115,7 @@ public class DobbeltLenketListe<T> implements Liste<T>
     @Override
     public boolean leggInn(T verdi)
     {
+
         throw new UnsupportedOperationException("Ikke laget ennå!");
     }
 
@@ -113,7 +128,9 @@ public class DobbeltLenketListe<T> implements Liste<T>
     @Override
     public boolean inneholder(T verdi)
     {
-        throw new UnsupportedOperationException("Ikke laget ennå!");
+      //  throw new UnsupportedOperationException("Ikke laget ennå!");
+
+      return indeksTil(verdi) != -1;
     }
 
     @Override
@@ -125,7 +142,20 @@ public class DobbeltLenketListe<T> implements Liste<T>
     @Override
     public int indeksTil(T verdi)
     {
-        throw new UnsupportedOperationException("Ikke laget ennå!");
+        //throw new UnsupportedOperationException("Ikke laget ennå!");
+        if(verdi == null){
+            return -1;
+        }
+        Node<T> p = hode;
+        for(int i = 0; i < antall; i++){
+
+            //hvis indeksen til hode stemmer med verdien, så skal den returnere i
+            if(p.verdi.equals(verdi)){
+                return i;
+            }
+            p = p.neste;
+        }
+        return -1;
     }
 
     @Override
