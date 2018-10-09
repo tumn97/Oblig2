@@ -33,13 +33,8 @@ public class DobbeltLenketListe<T> implements Liste<T>
     // hjelpemetode
     private Node<T> finnNode(int indeks)
     {
-        Node<T> p = hode;
-        for(int i = 0; i < indeks; i++){
-            p = p.neste;
+        throw new UnsupportedOperationException("Ikke laget ennå!");
 
-        }
-        return p;
-        //  throw new UnsupportedOperationException("Ikke laget ennå!");
     }
 
     // konstruktør
@@ -184,7 +179,15 @@ public class DobbeltLenketListe<T> implements Liste<T>
     @Override
     public void nullstill()
     {
-        throw new UnsupportedOperationException("Ikke laget ennå!");
+        //throw new UnsupportedOperationException("Ikke laget ennå!");
+        for (Node current = hode; current != null; current = current.neste) {
+            current.verdi = null;
+        }
+
+        hode = null;
+        hale = null;
+        antall = 0;
+
     }
 
     @Override
