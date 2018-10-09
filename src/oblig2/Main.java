@@ -1,4 +1,4 @@
-package Algoritme.oblig.oblig2;
+package oblig2;
 
 public class Main {
 
