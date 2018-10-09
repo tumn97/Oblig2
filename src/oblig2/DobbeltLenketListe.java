@@ -33,8 +33,22 @@ public class DobbeltLenketListe<T> implements Liste<T>
     // hjelpemetode
     private Node<T> finnNode(int indeks)
     {
-        throw new UnsupportedOperationException("Ikke laget ennå!");
+        //throw new UnsupportedOperationException("Ikke laget ennå!");
 
+        Node<T> p;
+
+        if (indeks < antall / 2) {
+            p = hode;
+            for (int i = 0; i < indeks; i++) {
+                p = p.neste;
+            }
+        } else {
+            p = hale;
+            for (int i = antall - 1; i > indeks; i--) {
+                p = p.forrige;
+            }
+        }
+        return p;
     }
 
     // konstruktør
@@ -80,7 +94,18 @@ public class DobbeltLenketListe<T> implements Liste<T>
     // subliste
     public Liste<T> subliste(int fra, int til)
     {
-        throw new UnsupportedOperationException("Ikke laget ennå!");
+        fratilKontroll(antall, fra, til);
+
+        Liste<T> subListe = new DobbeltLenketListe<>();
+
+        Node<T> current = finnNode(fra);
+
+        for (int i = fra; i < til; i++) {
+            subListe.leggInn(current.verdi);
+            current = current.neste;
+        }
+
+        return subListe;
     }
 
     @Override
@@ -122,7 +147,16 @@ public class DobbeltLenketListe<T> implements Liste<T>
     @Override
     public void leggInn(int indeks, T verdi)
     {
-        throw new UnsupportedOperationException("Ikke laget ennå!");
+        if (antall == 0) {
+            hode = hale = new Node<>(verdi, null, null);
+        } else if (indeks == 0) {
+            hode = new Node<>(verdi, null, hode.neste);
+        } else if (indeks == antall - 1) {
+            hale = new Node<>(verdi, hale.forrige, null);
+        } else {
+            hode = hale = new Node<>(verdi, hale.forrige, hode.neste);
+        }
+
     }
 
     @Override
@@ -136,7 +170,10 @@ public class DobbeltLenketListe<T> implements Liste<T>
     @Override
     public T hent(int indeks)
     {
-        throw new UnsupportedOperationException("Ikke laget ennå!");
+        indeksKontroll(indeks, false);
+
+        Node<T> tmp = finnNode(indeks);
+        return tmp.verdi;
     }
 
     @Override
@@ -161,7 +198,19 @@ public class DobbeltLenketListe<T> implements Liste<T>
     @Override
     public T oppdater(int indeks, T nyverdi)
     {
-        throw new UnsupportedOperationException("Ikke laget ennå!");
+        if(indeks < 0 || indeks > antall - 1) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        if(nyverdi == null) {
+            throw new NullPointerException();
+        }
+
+        Node<T> p = finnNode(indeks);
+        T gmlVerdi = p.verdi;
+        p.verdi = nyverdi;
+        endringer++;
+        return gmlVerdi;
     }
 
     @Override
@@ -322,5 +371,20 @@ public class DobbeltLenketListe<T> implements Liste<T>
         }
 
     } // DobbeltLenketListeIterator
+
+    private static void fratilKontroll(int antall, int fra, int til)
+    {
+        if (fra < 0)                                  // fra er negativ
+            throw new IndexOutOfBoundsException
+                    ("fra(" + fra + ") er negativ!");
+
+        if (til > antall)                          // til er utenfor tabellen
+            throw new IndexOutOfBoundsException
+                    ("til(" + til + ") > antall(" + antall + ")");
+
+        if (fra > til)                                // fra er større enn til
+            throw new IllegalArgumentException
+                    ("fra(" + fra + ") > til(" + til + ") - illegalt intervall!");
+    }
 
 }
