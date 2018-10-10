@@ -222,7 +222,29 @@ public class DobbeltLenketListe<T> implements Liste<T>
     @Override
     public T fjern(int indeks)
     {
-        throw new UnsupportedOperationException("Ikke laget ennå!");
+        //throw new UnsupportedOperationException("Ikke laget ennå!");
+        if(indeks < 0 || indeks > antall - 1) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        Objects.requireNonNull(indeks, "Tabellen er null");
+
+        Node<T> p = hode;
+        T q = p.verdi;
+
+        for (int i = 0; i<antall-1; i++) {
+
+            if (i == indeks) {
+                q = p.verdi;
+                p.verdi = null;
+            }
+
+            p = p.neste;
+
+        }
+        antall--;
+
+        return q;
     }
 
     @Override
@@ -236,6 +258,12 @@ public class DobbeltLenketListe<T> implements Liste<T>
         hode = null;
         hale = null;
         antall = 0;
+
+        /*
+        for (Node current = hode; current != null; current = current.neste) {
+            fjern(current.verdi);
+        }
+        */
 
     }
 

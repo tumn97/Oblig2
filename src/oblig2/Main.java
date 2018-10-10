@@ -14,7 +14,7 @@ public class Main {
 
         DobbeltLenketListe<Integer> liste2 = new DobbeltLenketListe<>();
         System.out.println(liste2.toString() + " " + liste2.omvendtString());
-        for (int i = 1; i <= 1000000; i++) {
+        for (int i = 1; i <= 100000000; i++) {
             liste2.leggInn(i);
             //System.out.println(liste2.toString() + " " + liste2.omvendtString());
         }
@@ -25,9 +25,6 @@ public class Main {
 
         System.out.println("Nullstill: " + tid1);
 
-        liste2.nullstill();
-
-        System.out.println(liste2.toString() + " " + liste2.omvendtString());
 
     }
 

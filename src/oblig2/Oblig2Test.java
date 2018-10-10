@@ -24,10 +24,10 @@ public class Oblig2Test {
 
         antallFeil += oppgave1();
         antallFeil += oppgave2();
-        //antallFeil += oppgave3();
+        antallFeil += oppgave3();
         antallFeil += oppgave4();
         //antallFeil += oppgave5();
-        //antallFeil += oppgave6();
+        antallFeil += oppgave6();
         antallFeil += oppgave7();
         //antallFeil += oppgave8();
         //antallFeil += oppgave9();
@@ -758,6 +758,7 @@ public class Oblig2Test {
         if (!liste.toString().equals("[B, C, E, F]")) {
             antallFeil++;
             System.out.println("Oppgave 6i: Feil i fjern(indeks)-metoden!");
+            System.out.println(liste.toString());
         }
 
         if (!liste.omvendtString().equals("[F, E, C, B]")) {
