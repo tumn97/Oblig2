@@ -232,40 +232,49 @@ public class DobbeltLenketListe<T> implements Liste<T>
     @Override
     public boolean fjern(T verdi)
     {
-        throw new UnsupportedOperationException("Ikke laget ennå!");
+        if (verdi == null || antall == 0) {
+            return false;
+        }
+
+        if (hode.verdi.equals(verdi) && antall == 1) {
+            hode = hale = null;
+            endringer++;
+            antall--;
+            return true;
+        }
+        if (hode.verdi.equals(verdi)) {
+            hode.neste.forrige = null;
+            hode = hode.neste;
+            endringer++;
+            antall--;
+            return true;
+        } else if (hale.verdi.equals(verdi)) {
+            hale = hale.forrige;
+            hale.neste = null;
+            endringer++;
+            antall--;
+            return true;
+        }
+        Node<T> temp = hode;
+        while (temp != null) {
+            if (temp.verdi.equals(verdi)) {
+                temp.verdi = null;
+                Node<T> byttPeker = temp.forrige;
+                temp.neste.forrige = temp.forrige;
+                byttPeker.neste = temp.neste;
+                endringer++;
+                antall--;
+                return true;
+            }
+            temp = temp.neste;
+        }
+        return false;
     }
 
     @Override
     public T fjern(int indeks)
     {
-        /*
-        //throw new UnsupportedOperationException("Ikke laget ennå!");
-        if(indeks < 0 || indeks > antall - 1) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        Objects.requireNonNull(indeks, "Tabellen er null");
-
-        Node<T> p = hode;
-        T q = p.verdi;
-
-        for (int i = 0; i<antall-1; i++) {
-
-            if (i == indeks) {
-                q = p.verdi;
-                p.verdi = null;
-            }
-
-            p = p.neste;
-
-        }
-        antall--;
-
-        return q;
-        */
-
         indeksKontroll(indeks, false);
-
         Node<T> temp = hode;
         Node<T> tempHale = hale;
         //int teller = 0;
@@ -290,7 +299,6 @@ public class DobbeltLenketListe<T> implements Liste<T>
             antall--;
             return tempHale.verdi;
         }
-
         /*
             while (temp != null) {
                 if (teller == indeks) {
@@ -304,8 +312,7 @@ public class DobbeltLenketListe<T> implements Liste<T>
                 teller++;
                 temp = temp.neste;
             }
-            */
-
+*/
 
         for (int i = 0; i <= antall; i++) {
             if (i == indeks) {
