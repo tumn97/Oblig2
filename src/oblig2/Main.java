@@ -14,7 +14,7 @@ public class Main {
 
         DobbeltLenketListe<Integer> liste2 = new DobbeltLenketListe<>();
         System.out.println(liste2.toString() + " " + liste2.omvendtString());
-        for (int i = 1; i <= 100000000; i++) {
+        for (int i = 1; i <= 10000000; i++) {
             liste2.leggInn(i);
             //System.out.println(liste2.toString() + " " + liste2.omvendtString());
         }
