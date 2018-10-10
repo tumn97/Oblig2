@@ -33,8 +33,6 @@ public class DobbeltLenketListe<T> implements Liste<T>
     // hjelpemetode
     private Node<T> finnNode(int indeks)
     {
-        //throw new UnsupportedOperationException("Ikke laget ennå!");
-
         Node<T> p;
 
         if (indeks < antall / 2) {
@@ -147,14 +145,23 @@ public class DobbeltLenketListe<T> implements Liste<T>
     @Override
     public void leggInn(int indeks, T verdi)
     {
+        Objects.requireNonNull(verdi);
+
+        indeksKontroll(indeks, false);
+
         if (antall == 0) {
             hode = hale = new Node<>(verdi, null, null);
-        } else if (indeks == 0) {
-            hode = new Node<>(verdi, null, hode.neste);
-        } else if (indeks == antall - 1) {
-            hale = new Node<>(verdi, hale.forrige, null);
+        } else if (indeks == 0) {                                       // legger først
+            Node<T> p = new Node<>(verdi, null, hode);
+            hode.forrige = p;
+            hode = p;
+        } else if (indeks == antall - 1) {                              // legger bakserst
+            Node<T> q = new Node<>(verdi, hale, null);
+            hale.neste = q;
+            hale = q;
         } else {
-            hode = hale = new Node<>(verdi, hale.forrige, hode.neste);
+            Node<T> r = new Node<>(verdi, hode, hale);
+
         }
 
     }
@@ -318,15 +325,7 @@ public class DobbeltLenketListe<T> implements Liste<T>
     @Override
     public void nullstill()
     {
-        //throw new UnsupportedOperationException("Ikke laget ennå!");
-        for (Node current = hode; current != null; current = current.neste) {
-            current.verdi = null;
-        }
-
-        hode = null;
-        hale = null;
-        antall = 0;
-
+        throw new UnsupportedOperationException("Ikke laget ennå!");
     }
 
     @Override
