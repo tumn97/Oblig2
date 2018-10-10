@@ -147,22 +147,31 @@ public class DobbeltLenketListe<T> implements Liste<T>
     {
         Objects.requireNonNull(verdi);
 
-        indeksKontroll(indeks, false);
+        if (indeks < 0 || indeks > antall) {
+            throw new IndexOutOfBoundsException();
+        }
 
         if (antall == 0) {
             hode = hale = new Node<>(verdi, null, null);
-        } else if (indeks == 0) {                                       // legger først
+        } else if (indeks == 0) {
             Node<T> p = new Node<>(verdi, null, hode);
             hode.forrige = p;
             hode = p;
-        } else if (indeks == antall - 1) {                              // legger bakserst
+        } else if (indeks == antall) {
             Node<T> q = new Node<>(verdi, hale, null);
             hale.neste = q;
             hale = q;
-        } else {
-            Node<T> r = new Node<>(verdi, hode, hale);
+        } else  {
+            Node<T> p = finnNode(indeks - 1);
+            Node<T> q = finnNode(indeks);
 
+            Node<T> r = new Node<>(verdi, q.forrige, p.neste);
+
+            p.neste = r;
+            q.forrige = r;
         }
+        antall++;
+        endringer++;
 
     }
 
@@ -223,43 +232,7 @@ public class DobbeltLenketListe<T> implements Liste<T>
     @Override
     public boolean fjern(T verdi)
     {
-       if (verdi == null || antall == 0) {
-           return false;
-       }
-
-        if (hode.verdi.equals(verdi) && antall == 1) {
-            hode = hale = null;
-            endringer++;
-            antall--;
-            return true;
-        }
-       if (hode.verdi.equals(verdi)) {
-           hode.neste.forrige = null;
-           hode = hode.neste;
-           endringer++;
-           antall--;
-           return true;
-       } else if (hale.verdi.equals(verdi)) {
-           hale = hale.forrige;
-           hale.neste = null;
-           endringer++;
-           antall--;
-           return true;
-       }
-       Node<T> temp = hode;
-       while (temp != null) {
-            if (temp.verdi.equals(verdi)) {
-                temp.verdi = null;
-                Node<T> byttPeker = temp.forrige;
-                temp.neste.forrige = temp.forrige;
-                byttPeker.neste = temp.neste;
-                endringer++;
-                antall--;
-                return true;
-            }
-            temp = temp.neste;
-        }
-        return false;
+        throw new UnsupportedOperationException("Ikke laget ennå!");
     }
 
     @Override
@@ -379,7 +352,6 @@ public class DobbeltLenketListe<T> implements Liste<T>
         hode = null;
         hale = null;
         antall = 0;
-
 
     }
 
