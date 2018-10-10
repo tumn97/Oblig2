@@ -147,22 +147,31 @@ public class DobbeltLenketListe<T> implements Liste<T>
     {
         Objects.requireNonNull(verdi);
 
-        indeksKontroll(indeks, false);
+        if (indeks < 0 || indeks > antall) {
+            throw new IndexOutOfBoundsException();
+        }
 
         if (antall == 0) {
             hode = hale = new Node<>(verdi, null, null);
-        } else if (indeks == 0) {                                       // legger først
+        } else if (indeks == 0) {
             Node<T> p = new Node<>(verdi, null, hode);
             hode.forrige = p;
             hode = p;
-        } else if (indeks == antall - 1) {                              // legger bakserst
+        } else if (indeks == antall) {
             Node<T> q = new Node<>(verdi, hale, null);
             hale.neste = q;
             hale = q;
-        } else {
-            Node<T> r = new Node<>(verdi, hode, hale);
+        } else  {
+            Node<T> p = finnNode(indeks - 1);
+            Node<T> q = finnNode(indeks);
 
+            Node<T> r = new Node<>(verdi, q.forrige, p.neste);
+
+            p.neste = r;
+            q.forrige = r;
         }
+        antall++;
+        endringer++;
 
     }
 
@@ -223,155 +232,19 @@ public class DobbeltLenketListe<T> implements Liste<T>
     @Override
     public boolean fjern(T verdi)
     {
-       if (verdi == null || antall == 0) {
-           return false;
-       }
-
-        if (hode.verdi.equals(verdi) && antall == 1) {
-            hode = hale = null;
-            endringer++;
-            antall--;
-            return true;
-        }
-       if (hode.verdi.equals(verdi)) {
-           hode.neste.forrige = null;
-           hode = hode.neste;
-           endringer++;
-           antall--;
-           return true;
-       } else if (hale.verdi.equals(verdi)) {
-           hale = hale.forrige;
-           hale.neste = null;
-           endringer++;
-           antall--;
-           return true;
-       }
-       Node<T> temp = hode;
-       while (temp != null) {
-            if (temp.verdi.equals(verdi)) {
-                temp.verdi = null;
-                Node<T> byttPeker = temp.forrige;
-                temp.neste.forrige = temp.forrige;
-                byttPeker.neste = temp.neste;
-                endringer++;
-                antall--;
-                return true;
-            }
-            temp = temp.neste;
-        }
-        return false;
+        throw new UnsupportedOperationException("Ikke laget ennå!");
     }
 
     @Override
     public T fjern(int indeks)
     {
-
-        //throw new UnsupportedOperationException("Ikke laget ennå!");
-        if(indeks < 0 || indeks > antall - 1) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        Objects.requireNonNull(indeks, "Tabellen er null");
-
-        Node<T> p = hode;
-        T q = p.verdi;
-
-        for (int i = 0; i<antall-1; i++) {
-
-            if (i == indeks) {
-                q = p.verdi;
-                p.verdi = null;
-            }
-
-            p = p.neste;
-
-        }
-        antall--;
-
-        return q;
-
-        /*
-        indeksKontroll(indeks, false);
-
-        Node<T> temp = hode;
-        Node<T> tempHale = hale;
-        //int teller = 0;
-
-        if (indeks == 0 && antall == 1) {
-            hode = hale = null;
-            endringer++;
-            antall--;
-            return temp.verdi;
-
-        }
-        if (indeks == 0) {
-            hode.neste.forrige = null;
-            hode = hode.neste;
-            endringer++;
-            antall--;
-            return temp.verdi;
-        } else if (indeks == antall-1) {
-            hale = hale.forrige;
-            hale.neste = null;
-            endringer++;
-            antall--;
-            return tempHale.verdi;
-        }
-
-            while (temp != null) {
-                if (teller == indeks) {
-                    Node<T> byttPeker = temp.forrige;
-                    temp.neste.forrige = temp.forrige;
-                    byttPeker.neste = temp.neste;
-                    endringer++;
-                    antall--;
-                    return temp.verdi;
-                }
-                teller++;
-                temp = temp.neste;
-            }
-
-
-        for (int i = 0; i <= antall; i++) {
-            if (i == indeks) {
-                Node<T> byttPeker = temp.forrige;
-                temp.neste.forrige = temp.forrige;
-                byttPeker.neste = temp.neste;
-                endringer++;
-                antall--;
-                break;
-                //return temp.verdi;
-            }
-            temp = temp.neste;
-        }
-
-
-        return temp.verdi;
-*/
+        throw new UnsupportedOperationException("Ikke laget ennå!");
     }
 
     @Override
     public void nullstill()
     {
-
-        //throw new UnsupportedOperationException("Ikke laget ennå!");
-        for (Node current = hode; current != null; current = current.neste) {
-            current.verdi = null;
-        }
-
-        hode = null;
-        hale = null;
-        antall = 0;
-
-        /*
-        for (Node current = hode; current != null; current = current.neste) {
-            fjern(current.verdi);
-        }
-        */
-
-
         throw new UnsupportedOperationException("Ikke laget ennå!");
-
     }
 
     @Override
