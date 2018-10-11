@@ -277,14 +277,12 @@ public class DobbeltLenketListe<T> implements Liste<T>
         indeksKontroll(indeks, false);
         Node<T> temp = hode;
         Node<T> tempHale = hale;
-        //int teller = 0;
 
         if (indeks == 0 && antall == 1) {
             hode = hale = null;
             endringer++;
             antall--;
             return temp.verdi;
-
         }
         if (indeks == 0) {
             hode.neste.forrige = null;
@@ -299,21 +297,6 @@ public class DobbeltLenketListe<T> implements Liste<T>
             antall--;
             return tempHale.verdi;
         }
-        /*
-            while (temp != null) {
-                if (teller == indeks) {
-                    Node<T> byttPeker = temp.forrige;
-                    temp.neste.forrige = temp.forrige;
-                    byttPeker.neste = temp.neste;
-                    endringer++;
-                    antall--;
-                    return temp.verdi;
-                }
-                teller++;
-                temp = temp.neste;
-            }
-*/
-
         for (int i = 0; i <= antall; i++) {
             if (i == indeks) {
                 Node<T> byttPeker = temp.forrige;
@@ -322,7 +305,6 @@ public class DobbeltLenketListe<T> implements Liste<T>
                 endringer++;
                 antall--;
                 break;
-                //return temp.verdi;
             }
             temp = temp.neste;
         }
@@ -477,15 +459,49 @@ public class DobbeltLenketListe<T> implements Liste<T>
             }
 
             fjernOK = true;
+            T temp = denne.verdi;
             denne = denne.neste;
-            return denne.verdi;
+            return temp;
 
         }
 
         @Override
         public void remove()
         {
-            throw new UnsupportedOperationException("Ikke laget ennå!");
+            if (!fjernOK) {
+                throw new IllegalStateException("Ulovlig kall paa metode");
+            }
+            if(!(endringer == iteratorendringer)) {
+                throw new ConcurrentModificationException("Endringer og iterasjoner endringer er ulike");
+            }
+            fjernOK = false;
+
+
+            if (antall == 1) {
+                hode = hale = null;   //Siden det kun er 1, settes hale/hode til null
+            } else if (denne == null) {
+                hale = hale.forrige;  //Hale skal fjernes, sletter link mellom
+                hale.neste.forrige = null; // noder på begge sider: neste/forrige
+                hale.neste = null;
+            } else if (denne.forrige == hode) {
+                // fjerner hode
+                hode.neste = null;
+                hode = denne;
+                hode.forrige = null;
+            } else {
+                /*
+                siden vi skal slette denne.forrige, setter jeg denne.forrige til aa peke paa
+                noden som kommer for. Altsaa denne.forrige.forrige. Deretter trenger man
+                bare sette den oppdaterte noden sin neste: denne.forrige.neste = denne;
+                 */
+                denne.forrige = denne.forrige.forrige;
+                denne.forrige.neste = denne;
+            }
+            endringer++;
+            antall--;
+            iteratorendringer++;
+
+
         }
 
     } // DobbeltLenketListeIterator
