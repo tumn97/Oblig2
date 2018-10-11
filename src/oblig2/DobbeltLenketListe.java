@@ -136,7 +136,7 @@ public class DobbeltLenketListe<T> implements Liste<T>
             hale = hale.neste;
 
         }
-
+        endringer++;
         antall++;
 
         return true;
@@ -386,22 +386,18 @@ public class DobbeltLenketListe<T> implements Liste<T>
     }
 
     public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
-        if (liste.tom()) {
 
-        }
+        for (int i = 1; i < liste.antall(); i++) {
+            T temp = liste.hent(i);  // flytter liste elementene til en hjelpevariabel
 
-        for (int i = 1; i < liste.antall(); i++)
-        {
-            T temp = liste.hent(i);  // flytter a[i] til en hjelpevariabel
-
-            int j = i-1;    // starter med neste tabellposisjon
+            int j = i-1;    // starter med neste listeposisjon
 
             // en og en verdi flyttes inntil rett sortert plass er funnet
             for (; j >= 0 && c.compare(temp,liste.hent(j)) < 0; j--) {
                 liste.oppdater(j+1, liste.hent(j));
             }
 
-            liste.oppdater(j+1, temp); // temp legges inn på rett plass
+            liste.oppdater(j+1, temp); // temp legges inn på rett plass ved å oppdatere posisjonen
         }
     }
 
@@ -414,7 +410,7 @@ public class DobbeltLenketListe<T> implements Liste<T>
     }
 
     public Iterator<T> iterator(int indeks) {
-        indeksKontroll(indeks, true);
+        indeksKontroll(indeks, false);
 
         DobbeltLenketListeIterator iterator = new DobbeltLenketListeIterator(indeks);
 
