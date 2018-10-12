@@ -318,25 +318,32 @@ public class DobbeltLenketListe<T> implements Liste<T>
     public void nullstill()
     {
 
-        //Metode 1 104 - 113 - 120
+        //Metode 1
         //Raskest på korte intervaller
-        //Ville anbefalt denne siden den ikke bruker hjelpemetoder
         /*
         for (Node current = hode; current != null; current = current.neste) {
             current.verdi = null;
+
+            if (current != hode) {
+                current.forrige = null;
+            }
+
+            if (current != hale) {
+                current.neste = null;
+            }
         }
         */
 
-        //Metode 2 53 - 65 - 74
-        //Raskest på høye intervaller
-        //Er kjappere selv om den bruker hjelpemetode
+
+        //Metode 2
+        //Raskest på høye/lange intervaller
 
         Node<T> p = hode;
         for (int i = 0; i < antall; i++) {
             fjern(p.verdi);
             p = p.neste;
         }
-
+        
         //Felles for begge to
         hode = null;
         hale = null;
